@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_enemy"]
+[ext_resource type="PackedScene" path="res://assets/custom_equipment/mythical_bosses/ignivar.glb" id="2_model"]
+
+[node name="Ignivar" type="CharacterBody3D"]
+script = ExtResource("1_enemy")
+boss_name = "Ignivar, Dragon Ancestral"
+max_health = 500.0
+attack_damage = 13.0
+skill_name = "Aliento ígneo"
+skill_element = "fire"
+skill_range = 17.0
+skill_damage_multiplier = 1.7
+xp_reward = 180
+move_speed = 1.8
+attack_range = 3.0
+attack_cooldown = 1.8
+collision_radius = 1.8
+collision_height = 3.8
+model_scene = ExtResource("2_model")
+model_scale = 0.95

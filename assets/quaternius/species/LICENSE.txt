@@ -1,0 +1,8 @@
+Quaternius Bestiary - Dungeon Monsters Kit
+
+License: Quaternius Asset License (QAL)
+https://quaternius.com/license.html
+
+The assets may be used in personal, educational, and commercial projects.
+The assets themselves may not be resold or redistributed as standalone asset
+files or asset packs. Refer to the linked license for the complete terms.

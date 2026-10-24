@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://iibdlhvgctc5"
+path="res://.godot/imported/Wall_Arch.obj-0ee24d6ad01b91e0e9a56da345bfaece.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Wall_Arch.obj-0ee24d6ad01b91e0e9a56da345bfaece.mesh"]
+
+source_file="res://assets/godot_store/village/Medieval Village MegaKit[Standard]/OBJ/Wall_Arch.obj"
+dest_files=["res://.godot/imported/Wall_Arch.obj-0ee24d6ad01b91e0e9a56da345bfaece.mesh", "res://.godot/imported/Wall_Arch.obj-0ee24d6ad01b91e0e9a56da345bfaece.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

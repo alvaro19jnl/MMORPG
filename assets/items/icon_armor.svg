@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs><linearGradient id="plate" x2="1" y2="1"><stop stop-color="#e9f5f6"/><stop offset=".45" stop-color="#779eb4"/><stop offset="1" stop-color="#354d68"/></linearGradient><linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffe8a0"/><stop offset="1" stop-color="#b67631"/></linearGradient></defs>
+  <path d="m43 16 21 10 21-10 26 17-11 29-12-7-4 55H44l-4-55-12 7-11-29z" fill="url(#plate)" stroke="#17212b" stroke-width="6" stroke-linejoin="round"/>
+  <path d="m43 16 21 10 21-10-8 31H51z" fill="url(#gold)" stroke="#17212b" stroke-width="5"/>
+  <path d="m64 48 13 20-13 30-13-30z" fill="#b84043" stroke="#17212b" stroke-width="4"/>
+  <path d="M31 38 43 56m54-18L85 56" stroke="#fff0bb" stroke-width="5" opacity=".8"/>
+</svg>

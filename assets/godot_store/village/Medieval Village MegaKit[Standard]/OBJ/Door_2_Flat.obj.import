@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dv2bywg0tm1w0"
+path="res://.godot/imported/Door_2_Flat.obj-eda627e601dc7e782eea28bc685aee09.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Door_2_Flat.obj-eda627e601dc7e782eea28bc685aee09.mesh"]
+
+source_file="res://assets/godot_store/village/Medieval Village MegaKit[Standard]/OBJ/Door_2_Flat.obj"
+dest_files=["res://.godot/imported/Door_2_Flat.obj-eda627e601dc7e782eea28bc685aee09.mesh", "res://.godot/imported/Door_2_Flat.obj-eda627e601dc7e782eea28bc685aee09.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

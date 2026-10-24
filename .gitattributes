@@ -1,2 +1,29 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+/Universal[[:space:]]Base[[:space:]]Characters\[Standard\].zip filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/downloads/Medieval_Village_MegaKitStandard.zip filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/downloads/Stylized_Nature_MegaKitStandard.zip filter=lfs diff=lfs merge=lfs -text
+/Bestiary[[:space:]]-[[:space:]]Dungeon[[:space:]]Monsters[[:space:]]Kit\[Standard\].zip filter=lfs diff=lfs merge=lfs -text
+/Bestiary[[:space:]]-[[:space:]]Dungeon[[:space:]]Monsters[[:space:]]Kit\[Standard\]/Bestiary[[:space:]]-[[:space:]]Dungeon[[:space:]]Monsters[[:space:]]Kit\[Standard\]/Exports/GLB[[:space:]](Godot-Unreal)/Imp.glb filter=lfs diff=lfs merge=lfs -text
+/Bestiary[[:space:]]-[[:space:]]Dungeon[[:space:]]Monsters[[:space:]]Kit\[Standard\]/Bestiary[[:space:]]-[[:space:]]Dungeon[[:space:]]Monsters[[:space:]]Kit\[Standard\]/Exports/GLB[[:space:]](Godot-Unreal)/Puglin.glb filter=lfs diff=lfs merge=lfs -text
+/assets/custom_equipment/fantasy_npcs/fantasy_npcs.blend filter=lfs diff=lfs merge=lfs -text
+/assets/custom_equipment/fantasy_npcs/fantasy_npcs.blend1 filter=lfs diff=lfs merge=lfs -text
+/assets/custom_equipment/mythical_beasts/mythical_beasts.blend filter=lfs diff=lfs merge=lfs -text
+/assets/custom_equipment/mythical_bosses/ignivar.glb filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/characters/glb/knightpr.glb filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/downloads/chibi_characters.zip filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/downloads/company_characters.zip filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/nature/Textures/Bark_DeadTree_Normal.png filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/nature/Textures/Bark_TwistedTree_Normal.png filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/nature/glTF/Bark_DeadTree_Normal.png filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/nature/glTF/Bark_TwistedTree_Normal.png filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/village/Medieval[[:space:]]Village[[:space:]]MegaKit\[Standard\]/Textures/Normals[[:space:]]Godot-Unity/T_Brick_Normal.png filter=lfs diff=lfs merge=lfs -text
+/assets/godot_store/village/Medieval[[:space:]]Village[[:space:]]MegaKit\[Standard\]/Textures/T_BrushedNoise.png filter=lfs diff=lfs merge=lfs -text
+/assets/kenney_particle_pack.zip filter=lfs diff=lfs merge=lfs -text
+/assets/kenney_particle_pack/Unity[[:space:]]samples/particlePack_samples.unitypackage filter=lfs diff=lfs merge=lfs -text
+/assets/polyhaven/forest_ground_04/forest_ground_04_nor_gl_2k.jpg filter=lfs diff=lfs merge=lfs -text
+/assets/polyhaven/pine_sapling_small/pine_sapling_small.bin filter=lfs diff=lfs merge=lfs -text
+/assets/polyhaven/shrub_01/shrub_01.bin filter=lfs diff=lfs merge=lfs -text
+/assets/quaternius/medieval_village_cc0.zip filter=lfs diff=lfs merge=lfs -text
+/assets/quaternius/species/Imp.glb filter=lfs diff=lfs merge=lfs -text
+/assets/quaternius/species/Puglin.glb filter=lfs diff=lfs merge=lfs -text

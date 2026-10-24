@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs><linearGradient id="steel" x2="1" y2="1"><stop stop-color="#f5f5e9"/><stop offset=".5" stop-color="#91aabb"/><stop offset="1" stop-color="#435a71"/></linearGradient><linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffe7a0"/><stop offset="1" stop-color="#aa6e2c"/></linearGradient></defs>
+  <path d="M20 75a44 44 0 0 1 88 0v20H20z" fill="url(#steel)" stroke="#17212b" stroke-width="6"/>
+  <path d="M64 22v72M20 75h88" stroke="url(#gold)" stroke-width="9"/>
+  <path d="m64 12-8 17 8 13 8-13z" fill="#d64a51" stroke="#17212b" stroke-width="4"/>
+  <path d="m34 53 14 8m46-8-14 8" stroke="#fff6db" stroke-width="5" stroke-linecap="round"/>
+  <path d="M42 95v17m44-17v17" stroke="#17212b" stroke-width="7"/>
+</svg>

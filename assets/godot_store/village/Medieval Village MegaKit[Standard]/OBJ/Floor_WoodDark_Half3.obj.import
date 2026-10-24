@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c5xgswl6r81fx"
+path="res://.godot/imported/Floor_WoodDark_Half3.obj-d98a830fe53250a9e3c40b705d7fdfcd.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Floor_WoodDark_Half3.obj-d98a830fe53250a9e3c40b705d7fdfcd.mesh"]
+
+source_file="res://assets/godot_store/village/Medieval Village MegaKit[Standard]/OBJ/Floor_WoodDark_Half3.obj"
+dest_files=["res://.godot/imported/Floor_WoodDark_Half3.obj-d98a830fe53250a9e3c40b705d7fdfcd.mesh", "res://.godot/imported/Floor_WoodDark_Half3.obj-d98a830fe53250a9e3c40b705d7fdfcd.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs><linearGradient id="crystal" x2="1" y2="1"><stop stop-color="#d7fff5"/><stop offset=".35" stop-color="#51d8ca"/><stop offset="1" stop-color="#3972ac"/></linearGradient><radialGradient id="shine"><stop stop-color="#fff"/><stop offset="1" stop-color="#83f5e4" stop-opacity="0"/></radialGradient></defs>
+  <path d="m64 9 37 25 14 43-51 42L13 77l15-43z" fill="url(#crystal)" stroke="#17212b" stroke-width="6" stroke-linejoin="round"/>
+  <path d="m64 9 1 110M28 34l37 4 36-4M13 77l52-39 50 39M64 38l-13 49 14 32 15-32z" fill="none" stroke="#e3fff6" stroke-width="4" opacity=".8"/>
+  <circle cx="47" cy="48" r="18" fill="url(#shine)"/>
+</svg>

@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://boo40b01epnaw"
+path="res://.godot/imported/Overhang_Plaster_Corner_Front.obj-d96b7c589df8dd442a3f3732ca0ad68c.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Overhang_Plaster_Corner_Front.obj-d96b7c589df8dd442a3f3732ca0ad68c.mesh"]
+
+source_file="res://assets/godot_store/village/Medieval Village MegaKit[Standard]/OBJ/Overhang_Plaster_Corner_Front.obj"
+dest_files=["res://.godot/imported/Overhang_Plaster_Corner_Front.obj-d96b7c589df8dd442a3f3732ca0ad68c.mesh", "res://.godot/imported/Overhang_Plaster_Corner_Front.obj-d96b7c589df8dd442a3f3732ca0ad68c.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
