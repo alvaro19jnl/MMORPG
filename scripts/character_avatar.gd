@@ -16,20 +16,12 @@ const OUTFIT_COLORS: Array[Color] = [
 	Color("#406b82"), Color("#a94d43"), Color("#4d7659"), Color("#c28c43"),
 	Color("#514b78"), Color("#343d49"), Color("#d0c4a6"), Color("#8a5576"),
 ]
-const CLASS_PROP_SCENES := {
-	"sword": preload("res://assets/custom_equipment/class_gear/fitted_sword.glb"),
-	"shield": preload("res://assets/custom_equipment/class_gear/fitted_shield.glb"),
-	"bow": preload("res://assets/custom_equipment/class_gear/fitted_bow.glb"),
-	"quiver": preload("res://assets/custom_equipment/class_gear/fitted_quiver.glb"),
-	"staff": preload("res://assets/custom_equipment/class_gear/fitted_staff.glb"),
-	"dagger": preload("res://assets/custom_equipment/class_gear/fitted_dagger.glb"),
-}
 const LEATHER_ALBEDO := preload("res://assets/polyhaven/fabric_leather_01/textures/fabric_leather_01_diff_1k.jpg")
 const LEATHER_NORMAL := preload("res://assets/polyhaven/fabric_leather_01/textures/fabric_leather_01_nor_gl_1k.jpg")
 const LEATHER_ARM := preload("res://assets/polyhaven/fabric_leather_01/textures/fabric_leather_01_arm_1k.jpg")
 const HUMAN_BODY_SCENES := [
-	preload("res://assets/quaternius/human_characters/Superhero_Female_FullBody.gltf"),
-	preload("res://assets/quaternius/human_characters/Superhero_Male_FullBody.gltf"),
+	preload("res://assets/custom_faces/Superhero_Female_FullBody.glb"),
+	preload("res://assets/custom_faces/Superhero_Male_FullBody.glb"),
 ]
 const HUMAN_HAIR_SCENES := [
 	preload("res://assets/quaternius/human_hairstyles/Hair_Buzzed.gltf"),
@@ -287,7 +279,23 @@ func _build_avatar() -> void:
 		Vector3(0.33, 0.36, 0.31),
 		Vector3(0.28, 0.39, 0.28),
 	]
+	var jaw_index := clampi(int(_profile.get("jaw", 0)), 0, 3)
+	var jaw_widths: Array[float] = [0.96, 1.06, 1.14, 0.88]
+	var jaw_heights: Array[float] = [1.02, 0.98, 0.96, 1.08]
 	var face_shape: Vector3 = face_shapes[clampi(face_index, 0, face_shapes.size() - 1)]
+	face_shape.x *= jaw_widths[jaw_index]
+	face_shape.y *= jaw_heights[jaw_index]
+	var eye_shape := clampi(int(_profile.get("eye_shape", 0)), 0, 3)
+	var eye_widths: Array[float] = [1.0, 1.18, 0.82, 0.98]
+	var eye_heights: Array[float] = [0.86, 1.22, 0.76, 1.04]
+	var eye_spacing: Array[float] = [0.115, 0.11, 0.12, 0.11]
+	var eye_y_offsets: Array[float] = [0.0, 0.006, -0.003, -0.012]
+	var nose_shape := clampi(int(_profile.get("nose_shape", 0)), 0, 3)
+	var nose_widths: Array[float] = [0.78, 0.84, 1.42, 0.88]
+	var nose_heights: Array[float] = [0.78, 1.18, 0.94, 0.72]
+	var nose_y_offsets: Array[float] = [0.015, 0.0, -0.006, 0.012]
+	var mouth_shape := clampi(int(_profile.get("mouth_shape", 1)), 0, 3)
+	var mouth_widths: Array[float] = [0.76, 1.0, 1.28, 1.05]
 	var avatar := Node3D.new()
 	avatar.name = "Avatar"
 	var species_height := [1.0, 1.04, 0.98, 0.92, 1.08, 1.9]
@@ -377,17 +385,22 @@ func _build_avatar() -> void:
 		_add_sphere(elbow_pivot, "Cuff", Vector3(0.0, -0.31, 0.025), Vector3(0.115, 0.05, 0.12), trim_color)
 		_add_sphere(elbow_pivot, "Hand", Vector3(0.0, -0.42, 0.035), Vector3(0.085, 0.12, 0.07), skin)
 		_add_sphere(head, "Ear", Vector3(side * 0.345, 0.28, -0.005), Vector3(0.065, 0.105, 0.07), skin)
-		_add_sphere(head, "Eye socket", Vector3(side * 0.115, 0.31, 0.231), Vector3(0.071, 0.076, 0.028), skin.darkened(0.045))
-		_add_sphere(head, "Eye white", Vector3(side * 0.115, 0.31, 0.249), Vector3(0.059, 0.064, 0.025), Color("#fffaf5"))
-		_add_sphere(head, "Iris", Vector3(side * 0.115, 0.307, 0.27), Vector3(0.038, 0.047, 0.019), eye_color)
-		_add_sphere(head, "Pupil", Vector3(side * 0.115, 0.304, 0.284), Vector3(0.022, 0.034, 0.012), Color("#292331"))
-		_add_sphere(head, "Eye highlight", Vector3(side * 0.126, 0.32, 0.296), Vector3(0.009, 0.012, 0.006), Color.WHITE)
-		_add_capsule(head, "Upper eyelid", Vector3(side * 0.115, 0.383, 0.248), Vector3(0.062, 0.011, 0.011), hair_color.darkened(0.18))
-		_add_capsule(head, "Eyebrow", Vector3(side * 0.115, 0.414, 0.236), Vector3(0.061, 0.009, 0.009), hair_color.darkened(0.1))
+		var eye_center := Vector3(side * eye_spacing[eye_shape], 0.31 + eye_y_offsets[eye_shape], 0.231)
+		_add_sphere(head, "Eye socket", eye_center, Vector3(0.071 * eye_widths[eye_shape], 0.076 * eye_heights[eye_shape], 0.028), skin.darkened(0.045))
+		_add_sphere(head, "Eye white", eye_center + Vector3(0.0, 0.0, 0.018), Vector3(0.059 * eye_widths[eye_shape], 0.064 * eye_heights[eye_shape], 0.025), Color("#fffaf5"))
+		_add_sphere(head, "Iris", eye_center + Vector3(0.0, -0.003, 0.039), Vector3(0.038 * eye_widths[eye_shape], 0.047 * eye_heights[eye_shape], 0.019), eye_color)
+		_add_sphere(head, "Pupil", eye_center + Vector3(0.0, -0.006, 0.053), Vector3(0.022, 0.034 * eye_heights[eye_shape], 0.012), Color("#292331"))
+		_add_sphere(head, "Eye highlight", eye_center + Vector3(side * 0.011, 0.01, 0.065), Vector3(0.009, 0.012, 0.006), Color.WHITE)
+		_add_capsule(head, "Upper eyelid", eye_center + Vector3(0.0, 0.073 * eye_heights[eye_shape], 0.017), Vector3(0.062 * eye_widths[eye_shape], 0.011, 0.011), hair_color.darkened(0.18))
+		var eyebrow := _add_capsule(head, "Eyebrow", eye_center + Vector3(0.0, 0.104 * eye_heights[eye_shape], 0.005), Vector3(0.061 * eye_widths[eye_shape], 0.009, 0.009), hair_color.darkened(0.1))
+		eyebrow.rotation.z = 0.08 if side < 0.0 else -0.08
 
-	_add_sphere(head, "Nose bridge", Vector3(0.0, 0.24, 0.254), Vector3(0.018, 0.065, 0.018), skin.lightened(0.035))
-	_add_sphere(head, "Nose tip", Vector3(0.0, 0.195, 0.276), Vector3(0.024, 0.018, 0.018), skin)
-	_add_capsule(head, "Mouth", Vector3(0.0, 0.095, 0.25), Vector3(0.036, 0.009, 0.007), Color("#a94f5d"))
+	var nose_y := 0.24 + nose_y_offsets[nose_shape]
+	_add_sphere(head, "Nose bridge", Vector3(0.0, nose_y, 0.254), Vector3(0.018 * nose_widths[nose_shape], 0.065 * nose_heights[nose_shape], 0.018), skin.lightened(0.035))
+	_add_sphere(head, "Nose tip", Vector3(0.0, nose_y - 0.045 * nose_heights[nose_shape], 0.276), Vector3(0.024 * nose_widths[nose_shape], 0.018, 0.018 * nose_widths[nose_shape]), skin)
+	var mouth := _add_capsule(head, "Mouth", Vector3(0.0, 0.095, 0.25), Vector3(0.036 * mouth_widths[mouth_shape], 0.009, 0.007), Color("#a94f5d"))
+	if mouth_shape == 3:
+		mouth.rotation.z = 0.08
 	_add_capsule(torso, "Collar", Vector3(0.0, 0.67, 0.08), Vector3(0.17, 0.065, 0.15), trim_color)
 	_add_capsule(torso, "Belt", Vector3(0.0, -0.04, 0.0), Vector3(0.3 * body_width, 0.045, 0.25), Color("#554438"))
 	_add_sphere(torso, "Belt buckle", Vector3(0.0, -0.04, 0.255), Vector3(0.045, 0.04, 0.018), Color("#d5b56f"))
@@ -397,7 +410,7 @@ func _build_avatar() -> void:
 	_add_hair(hair, int(_profile.get("hairstyle", 0)), hair_color)
 	var accessories := _add_offset_group(head, "Accessories", -1.48)
 	_add_accessory(accessories, int(_profile.get("accessory", 0)), outfit_color, hair_color)
-	_add_class_loadout(avatar, torso, class_id, outfit_color, trim_color, false, false)
+	_add_class_loadout(torso, class_id, outfit_color, trim_color, false)
 
 
 func _build_species_avatar(
@@ -425,6 +438,7 @@ func _build_species_avatar(
 	avatar.add_child(model)
 	if species_id < 4:
 		_customize_species_materials(model, species_id, skin, hair_color, eye_color)
+		_apply_face_shape_keys(model)
 	_species_skeleton = _find_skeleton(model)
 	if is_instance_valid(_species_skeleton):
 		for bone_name in [
@@ -443,10 +457,8 @@ func _build_species_avatar(
 				Vector3(1.08, 1.04, 1.03),
 				Vector3(0.96, 1.1, 0.96),
 			]
-			_species_skeleton.set_bone_pose_scale(
-				_species_bone_ids["Head"],
-				face_scales[clampi(int(_profile.get("face", 0)), 0, face_scales.size() - 1)]
-			)
+			var face_scale: Vector3 = face_scales[clampi(int(_profile.get("face", 0)), 0, face_scales.size() - 1)]
+			_species_skeleton.set_bone_pose_scale(_species_bone_ids["Head"], face_scale)
 	if species_id < 4:
 		var hair_scene: PackedScene = HUMAN_HAIR_SCENES[clampi(int(_profile.get("hairstyle", 0)), 0, HUMAN_HAIR_SCENES.size() - 1)]
 		var hair := hair_scene.instantiate() as Node3D
@@ -502,7 +514,7 @@ func _build_species_avatar(
 			hair_color,
 			species_id
 		)
-	_add_class_loadout(avatar, outfit_torso, class_id, outfit_color, trim_color, true, clean_preview)
+	_add_class_loadout(outfit_torso, class_id, outfit_color, trim_color, clean_preview)
 	return true
 
 
@@ -638,6 +650,52 @@ func _link_hair_skeleton() -> void:
 		var body_bone_index := _species_skeleton.find_bone(_hair_skeleton.get_bone_name(hair_bone_index))
 		if body_bone_index >= 0:
 			_hair_bone_pairs.append(Vector2i(hair_bone_index, body_bone_index))
+
+
+func _apply_face_shape_keys(model: Node) -> void:
+	var face_index := clampi(int(_profile.get("face", 0)), 0, 3)
+	var jaw_index := clampi(int(_profile.get("jaw", 0)), 0, 3)
+	var eye_index := clampi(int(_profile.get("eye_shape", 0)), 0, 3)
+	var nose_index := clampi(int(_profile.get("nose_shape", 0)), 0, 3)
+	var mouth_index := clampi(int(_profile.get("mouth_shape", 1)), 0, 3)
+	for child in model.get_children():
+		_apply_face_shape_keys_to_node(child, face_index, jaw_index, eye_index, nose_index, mouth_index)
+
+
+func _apply_face_shape_keys_to_node(
+		node: Node,
+		face_index: int,
+		jaw_index: int,
+		eye_index: int,
+		nose_index: int,
+		mouth_index: int
+) -> void:
+	if node is MeshInstance3D and node.mesh != null:
+		var mesh_instance := node as MeshInstance3D
+		var shape_values := {
+			"Face_Square": 1.0 if face_index == 1 else 0.0,
+			"Face_Round": 1.0 if face_index == 2 else 0.0,
+			"Face_Long": 1.0 if face_index == 3 else 0.0,
+			"Jaw_Angular": 1.0 if jaw_index == 1 else 0.0,
+			"Jaw_Broad": 1.0 if jaw_index == 2 else 0.0,
+			"Jaw_Narrow": 1.0 if jaw_index == 3 else 0.0,
+			"Eyes_Large": 1.0 if eye_index == 1 else 0.0,
+			"Eyes_Narrow": 1.0 if eye_index == 2 else 0.0,
+			"Eyes_Drooped": 1.0 if eye_index == 3 else 0.0,
+			"Nose_Straight": 1.0 if nose_index == 1 else 0.0,
+			"Nose_Wide": 1.0 if nose_index == 2 else 0.0,
+			"Nose_Upturned": 1.0 if nose_index == 3 else 0.0,
+			"Mouth_Fine": 1.0 if mouth_index == 0 else 0.0,
+			"Mouth_Wide": 1.0 if mouth_index == 2 else 0.0,
+			"Mouth_Smile": 1.0 if mouth_index == 3 else 0.0,
+		}
+		var mesh: Mesh = mesh_instance.mesh
+		for shape_index in range(mesh.get_blend_shape_count()):
+			var shape_name: String = str(mesh.get_blend_shape_name(shape_index))
+			if shape_values.has(shape_name):
+				mesh_instance.set_blend_shape_value(shape_index, shape_values[shape_name])
+	for child in node.get_children():
+		_apply_face_shape_keys_to_node(child, face_index, jaw_index, eye_index, nose_index, mouth_index)
 
 
 func _add_species_features(avatar: Node3D, species_id: int, skin: Color, hair_color: Color) -> void:
@@ -791,12 +849,10 @@ func _add_hair(parent: Node3D, style: int, color: Color) -> void:
 
 
 func _add_class_loadout(
-		avatar: Node3D,
 		torso: Node3D,
 		class_id: int,
 		outfit_color: Color,
 		trim_color: Color,
-		use_bone_attachments: bool,
 		clean_preview: bool
 ) -> void:
 	match class_id:
@@ -808,111 +864,17 @@ func _add_class_loadout(
 				metal_material.roughness = 0.38
 				breastplate.material_override = metal_material
 				_add_capsule(torso, "Plate edge", Vector3(0.0, 0.34, 0.315), Vector3(0.18, 0.022, 0.012), trim_color)
-			_add_class_prop(
-				avatar, "sword", "hand_r", Vector3(0.0, -0.025, 0.0),
-				Vector3(0.0, 0.0, 90.0), Vector3(0.42, 1.0, -0.23),
-				Vector3(90.0, 0.0, 18.0), use_bone_attachments
-			)
-			_add_class_prop(
-				avatar, "shield", "hand_l", Vector3(0.0, 0.025, 0.0),
-				Vector3(180.0, 0.0, 90.0), Vector3(-0.32, 1.03, -0.24),
-				Vector3(0.0, 180.0, -12.0), use_bone_attachments
-			)
 		1:
 			if not clean_preview:
 				_add_leather_capsule(torso, "Leather chest guard", Vector3(0.0, 0.31, 0.265), Vector3(0.23, 0.34, 0.045), Color("#704c35"))
 				_add_leather_capsule(torso, "Cross-body strap", Vector3(0.11, 0.31, 0.307), Vector3(0.04, 0.39, 0.018), trim_color)
-			_add_class_prop(
-				avatar, "bow", "hand_l", Vector3(0.0, 0.025, 0.0),
-				Vector3(0.0, 0.0, 90.0), Vector3(0.0, 1.05, -0.28),
-				Vector3(0.0, 0.0, -8.0), use_bone_attachments
-			)
-			_add_asset_prop(avatar, "quiver", Vector3(0.0, 1.02, 0.22), Vector3(0.0, 0.0, -12.0), Vector3.ONE)
 		2:
 			if not clean_preview:
 				_add_capsule(torso, "Mage mantle", Vector3(0.0, 0.22, -0.17), Vector3(0.39, 0.57, 0.12), outfit_color.darkened(0.2))
-			_add_class_prop(
-				avatar, "staff", "hand_r", Vector3(0.0, -0.025, 0.0),
-				Vector3(0.0, 0.0, -90.0), Vector3(-0.48, 0.72, -0.24),
-				Vector3(0.0, 0.0, -12.0), use_bone_attachments
-			)
 		3:
 			if not clean_preview:
 				_add_leather_capsule(torso, "Rogue leather vest", Vector3(0.0, 0.29, 0.27), Vector3(0.24, 0.36, 0.045), Color("#353942"))
 				_add_capsule(torso, "Rogue hood", Vector3(0.0, 0.7, -0.15), Vector3(0.32, 0.2, 0.25), outfit_color.darkened(0.28))
-			_add_class_prop(
-				avatar, "dagger", "hand_r", Vector3(0.0, -0.025, 0.0),
-				Vector3(0.0, 0.0, 90.0), Vector3(0.3, 0.54, 0.24),
-				Vector3(0.0, 0.0, -78.0), use_bone_attachments
-			)
-
-
-func _add_class_prop(
-		avatar: Node3D,
-		asset_name: String,
-		bone_name: String,
-		attachment_position: Vector3,
-		attachment_rotation: Vector3,
-		fallback_position: Vector3,
-		fallback_rotation: Vector3,
-		use_bone_attachments: bool
-) -> void:
-	if use_bone_attachments and is_instance_valid(_species_skeleton):
-		var bone_index := _species_skeleton.find_bone(bone_name)
-		if bone_index >= 0:
-			var prop_scene: PackedScene = CLASS_PROP_SCENES[asset_name]
-			var prop := prop_scene.instantiate() as Node3D
-			if prop == null:
-				push_error("El modelo de equipo '%s' no tiene una raíz Node3D." % asset_name)
-				return
-			var attachment := BoneAttachment3D.new()
-			attachment.name = "EquipmentAttachment_" + asset_name
-			attachment.bone_name = bone_name
-			_species_skeleton.add_child(attachment)
-			attachment.position = attachment_position
-			attachment.rotation_degrees = attachment_rotation
-			prop.name = "ClassProp_" + asset_name
-			attachment.add_child(prop)
-			return
-		push_error("El esqueleto no contiene el hueso '%s' para el equipo '%s'." % [bone_name, asset_name])
-		return
-	var hand_pivot: Node3D = _right_elbow_pivot if bone_name.ends_with("_r") else _left_elbow_pivot
-	if is_instance_valid(hand_pivot):
-		var holder_transform := avatar.global_transform.affine_inverse() * hand_pivot.global_transform
-		var desired_transform := Transform3D(
-			Basis.from_euler(Vector3(
-				deg_to_rad(fallback_rotation.x),
-				deg_to_rad(fallback_rotation.y),
-				deg_to_rad(fallback_rotation.z)
-			)),
-			fallback_position
-		)
-		var attachment := Node3D.new()
-		attachment.name = "EquipmentAttachment_" + asset_name
-		hand_pivot.add_child(attachment)
-		attachment.transform = holder_transform.affine_inverse() * desired_transform
-		_add_asset_prop(attachment, asset_name, Vector3.ZERO, Vector3.ZERO, Vector3.ONE)
-		return
-	_add_asset_prop(avatar, asset_name, fallback_position, fallback_rotation, Vector3.ONE)
-
-
-func _add_asset_prop(
-		parent: Node3D,
-		asset_name: String,
-		position: Vector3,
-		rotation_degrees: Vector3,
-		prop_scale: Vector3
-) -> void:
-	var prop_scene: PackedScene = CLASS_PROP_SCENES[asset_name]
-	var prop := prop_scene.instantiate() as Node3D
-	if prop == null:
-		push_error("El modelo de equipo '%s' no tiene una raíz Node3D." % asset_name)
-		return
-	prop.name = "ClassProp_" + asset_name
-	prop.position = position
-	prop.rotation_degrees = rotation_degrees
-	prop.scale = prop_scale
-	parent.add_child(prop)
 
 
 func _add_leather_capsule(parent: Node3D, label: String, position: Vector3, dimensions: Vector3, color: Color) -> MeshInstance3D:

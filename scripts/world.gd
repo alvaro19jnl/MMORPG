@@ -11,8 +11,8 @@ var _rain_particles: GPUParticles3D
 var _time_label: Label
 var _day_clock := 0.5
 var _weather_clock := 0.0
-var _weather_name := "Despejado"
-var _weather_index := 0
+var _weather_name := "Niebla"
+var _weather_index := 2
 var _villager_routines: Array[Dictionary] = []
 const DAY_CYCLE_SECONDS := 900.0
 const WEATHER_CHANGE_SECONDS := 240.0
@@ -27,6 +27,7 @@ func _ready() -> void:
 	_create_ground()
 	_create_trails()
 	_create_ancient_ruins()
+	_create_eerie_lights()
 	_create_bosses()
 	_create_landmarks()
 	_create_dungeon_entrances()
@@ -137,7 +138,7 @@ func _process(delta: float) -> void:
 	if _weather_clock >= WEATHER_CHANGE_SECONDS:
 		_weather_clock = 0.0
 		_weather_index = (_weather_index + 1) % 3
-		_weather_name = ["Despejado", "Lluvia", "Niebla"][_weather_index]
+		_weather_name = ["Nublado", "Lluvia", "Niebla"][_weather_index]
 	_update_world_conditions()
 
 
@@ -146,21 +147,37 @@ func _update_world_conditions() -> void:
 		return
 	var daylight_curve := sin(TAU * (_day_clock - 0.25))
 	var daylight := smoothstep(-0.16, 0.28, daylight_curve)
-	_sky_material.sky_top_color = Color("#081426").lerp(Color("#28577e"), daylight)
-	_sky_material.sky_horizon_color = Color("#14243d").lerp(Color("#e9bd8c"), daylight)
-	_sky_material.ground_bottom_color = Color("#101b24").lerp(Color("#344538"), daylight)
-	_sky_material.ground_horizon_color = Color("#253143").lerp(Color("#b6b895"), daylight)
+	_sky_material.sky_top_color = Color("#050911").lerp(Color("#34404b"), daylight)
+	_sky_material.sky_horizon_color = Color("#111722").lerp(Color("#74685f"), daylight)
+	_sky_material.ground_bottom_color = Color("#090d10").lerp(Color("#202622"), daylight)
+	_sky_material.ground_horizon_color = Color("#171b22").lerp(Color("#565348"), daylight)
 	_sunlight.rotation_degrees.x = lerpf(18.0, -58.0, daylight)
-	_sunlight.light_color = Color("#9bb9e8").lerp(Color("#ffe1b1"), daylight)
-	_sunlight.light_energy = lerpf(0.08, 1.45, daylight)
-	_world_environment.ambient_light_energy = lerpf(0.28, 0.95, daylight)
-	_world_environment.fog_density = 0.00135 if _weather_name == "Niebla" else 0.00075
-	_world_environment.fog_light_color = Color("#91a2b5") if _weather_name == "Niebla" else Color("#d6c39e")
+	_sunlight.light_color = Color("#7d88a5").lerp(Color("#c2b19a"), daylight)
+	_sunlight.light_energy = lerpf(0.025, 0.48, daylight)
+	_world_environment.ambient_light_energy = lerpf(0.16, 0.42, daylight)
+	_world_environment.fog_density = 0.0032 if _weather_name == "Niebla" else 0.00145
+	_world_environment.fog_light_color = Color("#525767") if _weather_name == "Niebla" else Color("#6a625f")
 	if _rain_particles != null:
 		_rain_particles.emitting = _weather_name == "Lluvia"
 	if _time_label != null:
 		var hour := int(_day_clock * 24.0)
 		_time_label.text = "%02d:00  |  %s" % [hour, _weather_name]
+
+
+func _create_eerie_lights() -> void:
+	_add_eerie_light("Fuego fatuo del monolito", Vector3(0.0, 1.4, -29.0), Color("#73aaa5"), 0.9, 9.0)
+	_add_eerie_light("Fuego fatuo del lago", Vector3(48.0, 1.1, 73.0), Color("#668d9a"), 0.65, 7.0)
+
+
+func _add_eerie_light(label: String, position: Vector3, color: Color, energy: float, radius: float) -> void:
+	var light := OmniLight3D.new()
+	light.name = label
+	light.position = position
+	light.light_color = color
+	light.light_energy = energy
+	light.omni_range = radius
+	light.shadow_enabled = false
+	add_child(light)
 
 
 func _create_weather_effects() -> void:
@@ -378,7 +395,7 @@ func _create_ground() -> void:
 	ground_mesh.position.y = -0.12
 	var ground_material := StandardMaterial3D.new()
 	ground_material.albedo_texture = _load_texture("res://assets/polyhaven/forest_ground_04/forest_ground_04_diff_2k.jpg")
-	ground_material.albedo_color = Color("#b2c49a")
+	ground_material.albedo_color = Color("#66705d")
 	ground_material.normal_enabled = true
 	ground_material.normal_texture = _load_texture("res://assets/polyhaven/forest_ground_04/forest_ground_04_nor_gl_2k.jpg")
 	var ground_arm := _load_texture("res://assets/polyhaven/forest_ground_04/forest_ground_04_arm_2k.jpg")
@@ -401,13 +418,13 @@ func _create_ground() -> void:
 	ground_body.add_child(ground_shape)
 	add_child(ground_body)
 
-	_add_box("Spawn Plaza", Vector3(0.0, 0.02, 2.0), Vector3(16.0, 0.16, 16.0), Color(0.38, 0.43, 0.43))
-	_add_box("North Walkway", Vector3(0.0, 0.015, -11.0), Vector3(5.0, 0.12, 16.0), Color(0.48, 0.51, 0.48))
+	_add_box("Spawn Plaza", Vector3(0.0, 0.02, 2.0), Vector3(16.0, 0.16, 16.0), Color("#45484a"))
+	_add_box("North Walkway", Vector3(0.0, 0.015, -11.0), Vector3(5.0, 0.12, 16.0), Color("#514e49"))
 
 
 func _create_landmarks() -> void:
-	_add_pillar("Plaza Beacon West", Vector3(-7.0, 1.5, 2.0), 0.42, 3.0, Color(0.85, 0.72, 0.43))
-	_add_pillar("Plaza Beacon East", Vector3(7.0, 1.5, 2.0), 0.42, 3.0, Color(0.85, 0.72, 0.43))
+	_add_pillar("Plaza Beacon West", Vector3(-7.0, 1.5, 2.0), 0.42, 3.0, Color("#71684f"))
+	_add_pillar("Plaza Beacon East", Vector3(7.0, 1.5, 2.0), 0.42, 3.0, Color("#71684f"))
 
 	for tree_position in [
 		Vector3(-13.0, 0.0, -5.0),
@@ -612,7 +629,7 @@ func _add_trail(points: Array, width: float) -> void:
 	var trail := MeshInstance3D.new()
 	trail.name = "Ancient Forest Trail"
 	trail.mesh = mesh
-	var material := _material(Color("#a39778"))
+	var material := _material(Color("#55534e"))
 	material.albedo_texture = _load_texture("res://assets/polyhaven/forest_ground_04/forest_ground_04_diff_2k.jpg")
 	material.normal_enabled = true
 	material.normal_texture = _load_texture("res://assets/polyhaven/forest_ground_04/forest_ground_04_nor_gl_2k.jpg")
@@ -625,9 +642,9 @@ func _add_trail(points: Array, width: float) -> void:
 
 func _create_ancient_ruins() -> void:
 	# Weathered elven waystone gives the opening area a recognizable destination.
-	var stone := Color("#79867a")
-	var dark_stone := Color("#4e625d")
-	_add_cylinder("Ruined Waystone Ring", Vector3(0.0, 0.045, -22.0), 8.0, 0.12, Color("#777b68"))
+	var stone := Color("#56615d")
+	var dark_stone := Color("#343d3e")
+	_add_cylinder("Ruined Waystone Ring", Vector3(0.0, 0.045, -22.0), 8.0, 0.12, Color("#4b5047"))
 	_add_pillar("Waystone Left", Vector3(-5.0, 2.2, -22.0), 0.65, 4.4, stone)
 	_add_pillar("Waystone Right", Vector3(5.0, 2.2, -22.0), 0.65, 4.4, stone)
 	_add_box("Waystone Lintel", Vector3(0.0, 4.25, -22.0), Vector3(11.0, 0.8, 1.1), dark_stone)
@@ -659,7 +676,7 @@ func _create_settlements() -> void:
 
 
 func _create_village(village_name: String, center: Vector3, roof_color: Color, residents: Array[String]) -> void:
-	_add_cylinder(village_name + " plaza", center + Vector3(0.0, 0.015, 0.0), 22.0, 0.08, Color("#95866a"))
+	_add_cylinder(village_name + " plaza", center + Vector3(0.0, 0.015, 0.0), 22.0, 0.08, Color("#625b50"))
 	var door_wall_asset := "village_door_wall" if roof_color.r >= roof_color.b else "village_stone_door_wall"
 	var window_wall_asset := "village_window_wall" if roof_color.r >= roof_color.b else "village_stone_window_wall"
 	var wall_asset := "village_wall" if roof_color.r >= roof_color.b else "village_stone_wall"
@@ -696,6 +713,9 @@ func _create_village(village_name: String, center: Vector3, roof_color: Color, r
 		_add_asset_instance("village_door", house, Vector3(-0.53, 0.0, 2.12) * house_scale, Vector3.ONE * house_scale)
 		_add_asset_instance("village_roof", house, Vector3(0.0, 2.9, 0.0) * house_scale, Vector3.ONE * house_scale)
 		_add_asset_instance("village_chimney", house, Vector3(2.1, 2.9, -1.2) * house_scale, Vector3.ONE * house_scale * 0.8)
+		_add_house_detail(house, "Viga ennegrecida", Vector3(-2.87, 1.45, 0.0), Vector3(0.16, 2.9, 0.18), Color("#382f2b"))
+		_add_house_detail(house, "Viga ennegrecida", Vector3(2.87, 1.45, 0.0), Vector3(0.16, 2.9, 0.18), Color("#382f2b"))
+		_add_house_detail(house, "Letrero de la casa", Vector3(-0.55, 2.25, 3.08), Vector3(1.25, 0.38, 0.12), Color("#493a30"))
 		var collision := CollisionShape3D.new()
 		var shape := BoxShape3D.new()
 		shape.size = Vector3(6.0, 3.0, 6.0) * house_scale
@@ -706,11 +726,13 @@ func _create_village(village_name: String, center: Vector3, roof_color: Color, r
 	_add_pillar(village_name + " pozo", center + Vector3(0.0, 0.55, 0.0), 1.6, 1.1, Color("#6d6b5e"))
 	_add_cylinder(village_name + " agua del pozo", center + Vector3(0.0, 0.66, 0.0), 0.92, 0.04, Color("#547e82"))
 	_add_pillar(village_name + " farol", center + Vector3(-5.0, 2.2, 5.0), 0.15, 4.4, Color("#bd9655"))
-	# A pair of colorful market stalls gives each plaza a clear focal point.
+	_add_village_lantern(village_name + " farol de plaza", center + Vector3(-5.0, 4.15, 5.0), Color("#e6a568"), 1.15, 14.0)
+	_add_village_lantern(village_name + " farol del mercado", center + Vector3(7.0, 3.0, -5.0), Color("#dfa16b"), 0.8, 10.0)
 	for stall_index in range(2):
 		var stall_offset := Vector3(-7.0 + float(stall_index) * 14.0, 0.0, -5.0)
-		_add_box(village_name + " puesto %d" % stall_index, center + stall_offset + Vector3(0.0, 0.8, 0.0), Vector3(3.8, 1.4, 2.2), Color("#79563b"))
-		_add_box(village_name + " toldo %d" % stall_index, center + stall_offset + Vector3(0.0, 2.0, 0.0), Vector3(4.4, 0.22, 2.8), roof_color.lightened(0.22 if stall_index == 0 else 0.08))
+		_add_box(village_name + " puesto %d" % stall_index, center + stall_offset + Vector3(0.0, 0.8, 0.0), Vector3(3.8, 1.4, 2.2), Color("#514034"))
+		_add_box(village_name + " toldo %d" % stall_index, center + stall_offset + Vector3(0.0, 2.0, 0.0), Vector3(4.4, 0.22, 2.8), roof_color.darkened(0.12 if stall_index == 0 else 0.28))
+		_add_box(village_name + " mostrador %d" % stall_index, center + stall_offset + Vector3(0.0, 1.56, 1.2), Vector3(3.9, 0.12, 0.22), Color("#826444"))
 	for index in range(residents.size()):
 		_create_villager(village_name, residents[index], center, center + Vector3(-6.0 + float(index % 3) * 6.0, 0.0, 3.0 + float(index / 3) * 4.0), index)
 	# Small garden beds and a fence give the settlement a lived-in edge.
@@ -718,7 +740,37 @@ func _create_village(village_name: String, center: Vector3, roof_color: Color, r
 		_add_box(village_name + " huerto", center + garden_offset + Vector3(0.0, 0.12, 0.0), Vector3(5.0, 0.24, 3.4), Color("#554b38"))
 		for plant_index in range(4):
 			var plant_position: Vector3 = center + garden_offset + Vector3(-1.8 + plant_index * 1.2, 0.2, 0.0)
-			_add_asset_instance("village_bush" if plant_index % 2 == 0 else "village_flowers", self, plant_position, Vector3.ONE * 0.62)
+			_add_asset_instance("forest_bush" if plant_index % 2 == 0 else "forest_mushroom", self, plant_position, Vector3.ONE * 0.5)
+	for grave_index in range(5):
+		var grave_offset := Vector3(-34.0 + float(grave_index) * 1.5, 0.0, -18.0 - float(grave_index % 2) * 1.6)
+		_add_pillar(village_name + " estela", center + grave_offset + Vector3(0.0, 0.42, 0.0), 0.32, 0.84, Color("#555755"))
+		_add_house_detail(self, village_name + " cruz de tumba", center + grave_offset + Vector3(0.0, 0.9, 0.0), Vector3(0.48, 0.08, 0.1), Color("#454844"))
+	_add_village_lantern(village_name + " luz del camino", center + Vector3(24.0, 2.0, 18.0), Color("#a5b9a2"), 0.45, 8.0)
+
+
+func _add_village_lantern(label: String, position: Vector3, color: Color, energy: float, radius: float) -> void:
+	var light := OmniLight3D.new()
+	light.name = label
+	light.position = position
+	light.light_color = color
+	light.light_energy = energy
+	light.omni_range = radius
+	light.shadow_enabled = false
+	add_child(light)
+	var flame := MeshInstance3D.new()
+	flame.name = label + " cristal"
+	var mesh := SphereMesh.new()
+	mesh.radius = 0.13
+	mesh.height = 0.34
+	flame.mesh = mesh
+	flame.position = position
+	var material := _material(color)
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.emission_enabled = true
+	material.emission = color
+	material.emission_energy_multiplier = 1.4
+	flame.material_override = material
+	add_child(flame)
 
 
 func _add_house_detail(parent: Node3D, label: String, position: Vector3, size: Vector3, color: Color) -> void:
@@ -874,7 +926,11 @@ func _create_villager(village_name: String, resident_name: String, center: Vecto
 		"height": 0.94 + float(variant % 3) * 0.06,
 		"skin": (variant * 2) % 8,
 		"face": variant % 4,
+		"jaw": (variant + 1) % 4,
 		"eyes": variant % 6,
+		"eye_shape": (variant + 2) % 4,
+		"nose_shape": (variant + 1) % 4,
+		"mouth_shape": variant % 4,
 		"hairstyle": (variant + 1) % 6,
 		"hair_color": (variant * 3) % 8,
 		"outfit": variant % 5,
@@ -959,9 +1015,9 @@ func _create_distant_mountains() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 41308
 	var mountain_colors := [
-		Color("#56675e"),
-		Color("#607167"),
-		Color("#6d7b6d"),
+		Color("#39434a"),
+		Color("#41474a"),
+		Color("#4a4b49"),
 	]
 	for index in range(11):
 		var offset := -430.0 + index * 86.0

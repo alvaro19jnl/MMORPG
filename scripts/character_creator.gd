@@ -24,6 +24,10 @@ const HAIR_NAMES := ["Corto", "Largo", "Rizado", "Puntas", "Coletas", "De lado"]
 const HAIR_COLOR_NAMES := ["Negro", "Castaño", "Castaño claro", "Rubio", "Plateado", "Rojo", "Violeta", "Blanco"]
 const EYE_NAMES := ["Marrón", "Verde", "Azul", "Ámbar", "Gris", "Violeta"]
 const FACE_NAMES := ["Ovalado", "Cuadrado", "Redondo", "Alargado"]
+const JAW_NAMES := ["Suave", "Angular", "Ancha", "Fina"]
+const EYE_SHAPE_NAMES := ["Almendrados", "Grandes", "Estrechos", "Caídos"]
+const NOSE_SHAPE_NAMES := ["Pequeña", "Recta", "Ancha", "Respingona"]
+const MOUTH_SHAPE_NAMES := ["Fina", "Natural", "Ancha", "Sonriente"]
 const BUILD_NAMES := ["Delgada", "Atlética", "Robusta"]
 var _avatar: Node3D
 var _viewport: SubViewport
@@ -34,7 +38,7 @@ var _name_input: LineEdit
 var _status_label: Label
 var _class_description: Label
 var _species_description: Label
-var _category_count := 10
+var _category_count := 14
 var _suppress_updates := false
 var _preview_dragging := false
 var _network_address: LineEdit
@@ -139,7 +143,11 @@ func _build_interface() -> void:
 	content.add_child(appearance_heading)
 	_add_option(content, "Tono de piel", "skin", SKIN_NAMES)
 	_add_option(content, "Forma del rostro", "face", FACE_NAMES)
+	_add_option(content, "Mandíbula", "jaw", JAW_NAMES)
 	_add_option(content, "Color de ojos", "eyes", EYE_NAMES)
+	_add_option(content, "Forma de ojos", "eye_shape", EYE_SHAPE_NAMES)
+	_add_option(content, "Forma de nariz", "nose_shape", NOSE_SHAPE_NAMES)
+	_add_option(content, "Forma de boca", "mouth_shape", MOUTH_SHAPE_NAMES)
 	_add_option(content, "Peinado", "hairstyle", HAIR_NAMES, 1)
 	_add_option(content, "Color de cabello", "hair_color", HAIR_COLOR_NAMES, 1)
 
@@ -416,7 +424,7 @@ func _update_preview() -> void:
 		var species_index := clampi((_options["species"] as OptionButton).selected, 0, SPECIES_DESCRIPTIONS.size() - 1)
 		_species_description.text = SPECIES_DESCRIPTIONS[species_index]
 		var uses_humanoid_appearance := species_index < 4
-		for key in ["body_type", "skin", "face", "eyes", "hairstyle", "hair_color"]:
+		for key in ["body_type", "skin", "face", "jaw", "eyes", "eye_shape", "nose_shape", "mouth_shape", "hairstyle", "hair_color"]:
 			(_options[key] as OptionButton).disabled = not uses_humanoid_appearance
 	if is_instance_valid(_status_label):
 		_status_label.text = "%d categorías · Vista previa actualizada" % _category_count
@@ -500,7 +508,11 @@ func _on_reset() -> void:
 		"height": 1.0,
 		"skin": 0,
 		"face": 0,
+		"jaw": 0,
 		"eyes": 0,
+		"eye_shape": 0,
+		"nose_shape": 0,
+		"mouth_shape": 1,
 		"hairstyle": 1,
 		"hair_color": 1,
 	})

@@ -1595,7 +1595,7 @@ func _cast_attack_ability(ability: Dictionary, effect_type: String) -> void:
 	var origin := camera.global_position
 	var direction := -camera.global_basis.z
 	var query := PhysicsRayQueryParameters3D.create(origin, origin + direction * attack_range, 2, [get_rid()])
-		var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
 	var impact_position: Vector3 = hit["position"] if not hit.is_empty() else origin + direction * attack_range
 	var target: Node = hit.get("collider") as Node if not hit.is_empty() else null
 	var aim_target: Node3D = target as Node3D if target != null and target.is_in_group("enemies") else null
